@@ -5,7 +5,7 @@ import { User } from '../../db-entities/typeorm/user.entity';
 import { Repository } from 'typeorm';
 import { UserModel } from '../../../model/user.model';
 import { UserDto } from '../../../dto/user.dto';
-import { CreateUserDto } from 'src/user-service/dto/createUserDto';
+import { UpsertUserDto } from 'src/user-service/dto/upsertUserDto';
 
 @Injectable()
 export class UserRepository implements UserGateway {
@@ -15,7 +15,7 @@ export class UserRepository implements UserGateway {
         @InjectRepository(User) private readonly userRepository: Repository<User>,
     ) { }
 
-    async create(user: CreateUserDto): Promise<UserModel> {
+    async create(user: UpsertUserDto): Promise<UserModel> {
         try {
             const newUser = this.userRepository.create(user);
             const savedUser = await this.userRepository.save(newUser);

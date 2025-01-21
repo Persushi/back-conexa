@@ -5,6 +5,6 @@ export interface FilmGateway {
     create(Film: FilmDto): Promise<FilmModel>;
     update(id: string, Film: Partial<FilmDto>): Promise<FilmModel>;
     delete(id: string): Promise<void>;
-    findAllAndSynch(): Promise<FilmModel[]>; // y sincronizar
+    findAll(synch: boolean): Promise<FilmModel[]>; // y sincronizar
     findByTitle(title: string): Promise<FilmModel>;
 }

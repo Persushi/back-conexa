@@ -2,7 +2,7 @@ import { UserGateway } from '../model/gateway/user.gateway';
 import { UserModel } from '../model/user.model';
 import { UserDto } from '../dto/user.dto';
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../dto/createUserDto';
+import { UpsertUserDto } from '../dto/upsertUserDto';
 
 @Injectable()
 export class UserService {
@@ -10,7 +10,7 @@ export class UserService {
         @Inject('UserGateway') private readonly userGateway: UserGateway,
     ) { }
 
-    createUser(user: CreateUserDto): Promise<UserModel> {
+    createUser(user: UpsertUserDto): Promise<UserModel> {
         return this.userGateway.create(user);
     }
 

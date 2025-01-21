@@ -61,7 +61,7 @@ export class FilmController {
     @ApiParam({ name: 'id', type: 'string' })
     @ApiResponse({
         status: HttpStatus.NO_CONTENT,
-        description: 'Film deleted successfully',
+        description: 'Film deleted successfully ',
     })
     deleteFilm(@Param('id') id: string): Promise<void> {
         return this.FilmService.deleteFilm(id);
@@ -73,7 +73,7 @@ export class FilmController {
     }
 
     @Get('Synch')
-    synchAndGetAll(): Promise<FilmModel[]> {
-        return this.FilmService.synchAndGetAll()
+    synchAndGetAll(@Param('Synch') Synch: boolean): Promise<FilmModel[]> {
+        return this.FilmService.synchAndGetAll(Synch)
     }
 }

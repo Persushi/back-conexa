@@ -17,10 +17,9 @@ import {
     ApiParam,
     ApiBearerAuth,
 } from '@nestjs/swagger';
-import { UserDto } from '../dto/user.dto';
 import { UserModel } from '../model/user.model';
 import { UserService } from '../business/user.service';
-import { CreateUserDto } from '../dto/createUserDto';
+import { UpsertUserDto } from '../dto/upsertUserDto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -37,7 +36,7 @@ export class UserController {
         description: 'User created successfully',
         type: UserModel,
     })
-    createUser(@Body() user: CreateUserDto): Promise<UserModel> {
+    createUser(@Body() user: UpsertUserDto): Promise<UserModel> {
         return this.userService.createUser(user);
     }
 
@@ -51,7 +50,7 @@ export class UserController {
     })
     updateUser(
         @Param('id') id: string,
-        @Body() userDto: Partial<UserDto>,
+        @Body() userDto: UpsertUserDto,
     ): Promise<UserModel> {
         return this.userService.updateUser(id, userDto);
     }

@@ -1,7 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsNumber, IsUrl, IsDateString, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsUrl, IsDateString, IsArray, IsUUID } from 'class-validator';
 
 export class FilmModel {
+    @ApiProperty({
+        description: 'Unique id'
+    })
+    @IsUUID()
+    id?: string
+
     @ApiProperty({
         description: 'Title of the film',
         example: 'A New Hope',

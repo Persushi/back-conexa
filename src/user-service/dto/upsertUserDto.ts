@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsString } from "class-validator";
+import { IsBoolean, IsEmail, IsString } from "class-validator";
 
-export class CreateUserDto {
+export class UpsertUserDto {
     @ApiProperty({
         description: 'Email of the user',
         example: 'user@example.com',
@@ -14,4 +14,10 @@ export class CreateUserDto {
     })
     @IsString()
     password: string;
+
+    @ApiProperty({
+        description: 'Role'
+    })
+    @IsBoolean()
+    admin: boolean;
 }

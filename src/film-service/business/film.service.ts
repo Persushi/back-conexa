@@ -25,7 +25,7 @@ export class FilmService {
         return this.FilmGateway.findByTitle(title);
     }
 
-    synchAndGetAll(): Promise<FilmModel[]> {
-        return this.FilmGateway.findAllAndSynch();
+    synchAndGetAll(synch: boolean): Promise<FilmModel[]> {
+        return this.FilmGateway.findAll(synch);
     }
 }

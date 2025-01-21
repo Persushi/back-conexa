@@ -16,7 +16,7 @@ export class FilmDto {
     })
     @IsOptional()
     @IsNumber()
-    episode_id?: number;
+    episodeId?: number;
 
     @ApiProperty({
         description: 'Opening crawl text of the film',
@@ -25,7 +25,7 @@ export class FilmDto {
     })
     @IsOptional()
     @IsString()
-    opening_crawl?: string;
+    openingCrawl?: string;
 
     @ApiProperty({
         description: 'Director of the film',
@@ -47,20 +47,6 @@ export class FilmDto {
     })
     @IsDateString()
     release_date: string;
-
-    @ApiProperty({
-        description: 'Creation timestamp',
-        example: '2024-01-01T00:00:00Z',
-    })
-    @IsDateString()
-    created: string;
-
-    @ApiProperty({
-        description: 'Last update timestamp',
-        example: '2024-01-01T00:00:00Z',
-    })
-    @IsDateString()
-    edited: string;
 
     @ApiProperty({
         description: 'URL of the film resource',
