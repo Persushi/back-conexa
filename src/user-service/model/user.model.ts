@@ -10,27 +10,9 @@ export class UserModel {
   id: string;
 
   @ApiProperty({
-    description: 'Creation timestamp',
-    example: '2024-01-01T00:00:00Z',
-  })
-  createdAt: Date;
-
-  @ApiProperty({
-    description: 'Last update timestamp',
-    example: '2024-01-01T00:00:00Z',
-  })
-  updatedAt: Date;
-
-  @ApiProperty({
     description: 'Email of the user',
     example: 'user@example.com',
   })
   @IsString()
   email: string;
-
-  @ApiProperty({
-    description: 'Password'
-  })
-  @IsString()
-  password: string;
 }

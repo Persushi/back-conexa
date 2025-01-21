@@ -20,6 +20,7 @@ import {
 import { UserDto } from '../dto/user.dto';
 import { UserModel } from '../model/user.model';
 import { UserService } from '../business/user.service';
+import { CreateUserDto } from '../dto/createUserDto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -36,8 +37,8 @@ export class UserController {
         description: 'User created successfully',
         type: UserModel,
     })
-    createUser(@Body() userDto: UserDto): Promise<UserModel> {
-        return this.userService.createUser(userDto);
+    createUser(@Body() user: CreateUserDto): Promise<UserModel> {
+        return this.userService.createUser(user);
     }
 
     @Put(':id')
