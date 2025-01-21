@@ -9,6 +9,7 @@ import {
     HttpStatus,
     HttpCode,
     Logger,
+    UseGuards,
 } from '@nestjs/common';
 import {
     ApiTags,
@@ -20,25 +21,15 @@ import {
 import { UserModel } from '../model/user.model';
 import { UserService } from '../business/user.service';
 import { UpsertUserDto } from '../dto/upsertUserDto';
+import { AdminGuard } from 'src/auth-service/guards/admin-guard';
 
 @ApiTags('Users')
 @Controller('users')
 @ApiBearerAuth()
+@UseGuards(AdminGuard)
 export class UserController {
     private readonly logger = new Logger(UserController.name);
     constructor(private readonly userService: UserService) { }
-
-    @Post()
-    @HttpCode(HttpStatus.CREATED)
-    @ApiOperation({ summary: 'Create a new user' })
-    @ApiResponse({
-        status: HttpStatus.CREATED,
-        description: 'User created successfully',
-        type: UserModel,
-    })
-    createUser(@Body() user: UpsertUserDto): Promise<UserModel> {
-        return this.userService.createUser(user);
-    }
 
     @Put(':id')
     @ApiOperation({ summary: 'Update user' })
@@ -51,7 +42,7 @@ export class UserController {
     updateUser(
         @Param('id') id: string,
         @Body() userDto: UpsertUserDto,
-    ): Promise<UserModel> {
+    ): Promise<{ status: number, message: string }> {
         return this.userService.updateUser(id, userDto);
     }
 
@@ -68,6 +59,11 @@ export class UserController {
     }
 
     @Get('email/:email')
+    @ApiOperation({ summary: 'Get an user by email' })
+    @ApiResponse({
+        status: HttpStatus.ACCEPTED,
+        description: 'User data',
+    })
     getStatusByEmail(@Param('email') email: string): Promise<UserModel> {
         return this.userService.getByEmail(email);
     }

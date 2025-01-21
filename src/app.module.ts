@@ -3,6 +3,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserServiceModule } from './user-service/user-service.module';
 import { FilmServiceModule } from './film-service/film-service.module';
+import { AuthModule } from './auth-service/auth-service.module';
 
 const config: TypeOrmModuleOptions = {
   "type": "postgres",
@@ -26,6 +27,7 @@ const config: TypeOrmModuleOptions = {
     TypeOrmModule.forRoot(config),
     UserServiceModule,
     FilmServiceModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],

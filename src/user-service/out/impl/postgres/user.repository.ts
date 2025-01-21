@@ -1,10 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { UserGateway } from '../../../model/gateway/user.gateway'
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../db-entities/typeorm/user.entity';
 import { Repository } from 'typeorm';
 import { UserModel } from '../../../model/user.model';
 import { UserDto } from '../../../dto/user.dto';
+import * as bcrypt from 'bcrypt';
 import { UpsertUserDto } from 'src/user-service/dto/upsertUserDto';
 
 @Injectable()
@@ -15,28 +16,33 @@ export class UserRepository implements UserGateway {
         @InjectRepository(User) private readonly userRepository: Repository<User>,
     ) { }
 
-    async create(user: UpsertUserDto): Promise<UserModel> {
+    async create(user: UpsertUserDto): Promise<{ status: number, message: string }> {
         try {
+            const check = await this.userRepository.findOne({ where: { email: user?.email } });
+            if (check) {
+                throw new BadRequestException('User already exists.');
+            }
+            user.password = await bcrypt.hash(user.password, 10)
             const newUser = this.userRepository.create(user);
             const savedUser = await this.userRepository.save(newUser);
-            return mapToUserModel(savedUser);
+            return { status: 201, message: 'User created successfully' };
         } catch (error) {
             this.logger.error('Error creating user', error.stack);
-            throw new Error('Error creating user');
+            return error.response
         }
     }
 
-    async update(id: string, user: Partial<UserDto>): Promise<UserModel> {
+    async update(id: string, user: Partial<UserDto>): Promise<{ status: number, message: string }> {
         try {
             await this.userRepository.update(id, user);
             const updatedUser = await this.userRepository.findOne({ where: { id } });
             if (!updatedUser) {
                 throw new Error(`User with ID ${id} not found`);
             }
-            return mapToUserModel(updatedUser);
+            return { status: 201, message: 'User updated' };
         } catch (error) {
             this.logger.error(`Error updating user with ID ${id}`, error.stack);
-            throw new Error('Error updating user');
+            return error.response
         }
     }
 
@@ -49,7 +55,7 @@ export class UserRepository implements UserGateway {
             return
         } catch (error) {
             this.logger.error(`Error deleting user with ID ${id}`, error.stack);
-            throw new Error('Error deleting user');
+            return error.response
         }
     }
 
@@ -59,7 +65,7 @@ export class UserRepository implements UserGateway {
             return list.map(e => mapToUserModel(e))
         } catch (error) {
             this.logger.error('Error fetching all users', error.stack);
-            throw new Error('Error fetching all users');
+            return error.response
         }
     }
 
@@ -72,7 +78,7 @@ export class UserRepository implements UserGateway {
             return mapToUserModel(user);
         } catch (error) {
             this.logger.error(`Error finding user with email ${email}`, error.stack);
-            throw new Error('Error finding user');
+            return error.response
         }
     }
 }
@@ -81,6 +87,8 @@ export class UserRepository implements UserGateway {
 const mapToUserModel = (user: User): UserModel => {
     return {
         id: user.id,
-        email: user.email
+        email: user.email,
+        password: user.password,
+        admin: user.admin
     }
 }

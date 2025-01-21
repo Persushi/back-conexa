@@ -8,7 +8,7 @@ async function bootstrap() {
   // Configuración de Swagger
   const config = new DocumentBuilder()
     .setTitle('API de Conexa')
-    .setDescription('Swagger Generico con los Cruds que correspondan')
+    .setDescription('Swagger de lo mas generico 😛')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

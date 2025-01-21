@@ -15,4 +15,14 @@ export class UserModel {
   })
   @IsString()
   email: string;
+
+  @ApiProperty({
+    description: 'Hashed password'
+  })
+  password: string;
+
+  @ApiProperty({
+    description: 'if is an Admin'
+  })
+  admin: boolean;
 }

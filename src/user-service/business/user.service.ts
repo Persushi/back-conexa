@@ -10,11 +10,11 @@ export class UserService {
         @Inject('UserGateway') private readonly userGateway: UserGateway,
     ) { }
 
-    createUser(user: UpsertUserDto): Promise<UserModel> {
+    createUser(user: UpsertUserDto): Promise<{ status: number, message: string }> {
         return this.userGateway.create(user);
     }
 
-    updateUser(id: string, user: Partial<UserDto>): Promise<UserModel> {
+    updateUser(id: string, user: Partial<UserDto>): Promise<{ status: number, message: string }> {
         return this.userGateway.update(id, user);
     }
 
